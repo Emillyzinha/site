@@ -12,10 +12,10 @@ function Welcome({ navigation }) {
             <View>
                 <Text style={stylesWelcome.text}>Welcome to <B>yourbank!</B></Text>
                 <View style={stylesWelcome.viewButton}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Register')} style={stylesWelcome.buttonRegister}>
-                        <Text style={stylesWelcome.textButtonRegister}>Register</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Login')} style={stylesWelcome.buttonRegister}>
+                        <Text style={stylesWelcome.textButtonRegister}>Login</Text>
                     </TouchableOpacity>
-                    <Button navigation={navigation} navigateTo='Login'>Login</Button>
+                    <Button onPress={() => navigation.navigate('Register')}>Register</Button>
                 </View>
             </View>
 

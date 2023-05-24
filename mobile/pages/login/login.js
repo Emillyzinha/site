@@ -19,7 +19,7 @@ function Login({ navigation }) {
         }).then((resposta) => {
             console.log(resposta)
             setToken(resposta.data.access)
-            setItem('token', JSON.stringify(resposta.data))
+            localStorage.setItem('token', JSON.stringify(resposta.data))
             // navigate('/edit')
             navigation.navigate('Home')
 

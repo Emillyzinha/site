@@ -24,7 +24,7 @@ const stylesWelcome = StyleSheet.create({
         height: 47,
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
         marginBottom: 30,
     },
     buttonRegister: {

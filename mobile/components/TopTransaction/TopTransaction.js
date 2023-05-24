@@ -1,7 +1,7 @@
 import { Image, Text, View } from "react-native"
 import stylesTopTransaction from "./TopTransactionStyle"
 
-const TopTransaction = ({ image, text }) => {
+const TopPages = ({ image, text }) => {
     return (
         <View style={stylesTopTransaction.top}>
             <Image source={image} style={stylesTopTransaction.image} />
@@ -10,4 +10,4 @@ const TopTransaction = ({ image, text }) => {
     )
 }
 
-export default TopTransaction
+export default TopPages

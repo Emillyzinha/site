@@ -12,6 +12,8 @@ import Editing from "./pages/editing/editing";
 import Loan from "./pages/Loan/Loan";
 import ConfirmTransaction from "./pages/ConfirmTransaction/ConfirmTransaction";
 import Unlock from "./pages/Unlock/Unlock";
+import Card from "./pages/Card/Card";
+import Address from "./pages/Address/address.js";
 
 const Pilha = createStackNavigator()
 
@@ -20,8 +22,23 @@ function Routers() {
         <NavigationContainer>
             <Pilha.Navigator>
                 <Pilha.Screen
+                    name='Address'
+                    component={Address}
+                    options={{ headerShown: false }}
+                />
+                <Pilha.Screen
+                    name='Card'
+                    component={Card}
+                    options={{ headerShown: false }}
+                />
+                <Pilha.Screen
                     name='Login'
                     component={Login}
+                    options={{ headerShown: false }}
+                />
+                <Pilha.Screen
+                    name='Register'
+                    component={Register}
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen
@@ -32,11 +49,6 @@ function Routers() {
                 <Pilha.Screen
                     name='Desbloquear'
                     component={Unlock}
-                    options={{ headerShown: false }}
-                />
-                <Pilha.Screen
-                    name='Register'
-                    component={Register}
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen

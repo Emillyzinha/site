@@ -1,12 +1,15 @@
+import { useState } from "react"
 import { TextInput, View } from "react-native"
 import { StyleSheet } from 'react-native'
 
 const CampoInput = ({ onChange, children }) => {
+    const [isEditableBirth, setIsEditableBirth] = useState(false)
     return (
         <TextInput
             style={estilos.input}
             placeholder={children}
             onChange={onChange}
+            // editable={isEditableBirth}
         />
     )
 }
