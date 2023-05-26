@@ -1,9 +1,12 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from .models import *
 from .serializes import *
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import AccessToken
+from django.http import HttpResponse
+from django.core import serializers
 
 def dados_usuario(request):
     token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[1]
@@ -68,17 +71,57 @@ class EnderecoCRUD(viewsets.ModelViewSet):
     queryset= Endereco.objects.all()
     serializer_class = EnderecoSerializer
 
+    # def list(self, request, *args, **kwargs):
+    #     id_cliente = dados_usuario(request)
+    #     id_cliente_endereco = request.data['fk_cliente'] = id_cliente
+    #     if id_cliente_endereco.exists():
+    #         print('-'*50)
+    #         print('existe')
+    #     elif id_cliente_endereco.DoesNotExist():
+    #         print('-'*50)
+    #         print('não existe')
+
+    #     return super().list(request, *args, **kwargs)
+
     def create(self, request, *args, **kwargs):
 
+        # CRIAR ENDEREÇO E SUBSTITUIR A FK DE CLIENTE
         id_cliente = dados_usuario(request)
         cliente = Cliente.objects.get(id=id_cliente)
-        request.POST._mutable = True
-        request.data['fk_cliente'] = cliente
+        id_cliente_endereco = request.data['fk_cliente'] = id_cliente
+        endereco = Endereco.objects.filter(fk_cliente=id_cliente).exists()
+        if not endereco:
+            print('-'*50)
+            print('não existe')
 
+            request.POST._mutable = True
 
-        # Cartao.objects.create()
+            # CRIANDO NOVO CARTÃO
+            numero_cartao = ''
+            for i in range(0,9):
+                num_cartao = str(randint(0,16))
+                numero_cartao += num_cartao
+
+            numero_CVV = ''
+            for i in range(0,9):
+                num_cvv = str(randint(0,3))
+                numero_CVV += num_cvv
+
+            nome_cartao = cliente.nomeCompleto
+            conta = Conta.objects.get(fk_cliente_id = id_cliente_endereco)
+            id_conta = conta.id
+            bandeira = 'AVISTA'
+
+            novo_cartao = Cartao.objects.create(numero=numero_cartao, CVV=numero_CVV, data_validade='2023-12-10', nome_titular=nome_cartao, bandeira=bandeira, fk_conta_id=id_conta)
+            novo_cartao.save()
+        elif endereco:
+            print('-'*50)
+            print('existe')
+            response = HttpResponse("Account already has a card.")
+            return response      
 
         return super().create(request, *args, **kwargs)
+
     
     # def list(self, request, *args, **kwargs):
     #     token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[1]
@@ -98,6 +141,21 @@ class CartaoCRUD(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, )
     queryset= Cartao.objects.all()
     serializer_class = CartaoSerializer
+
+    def list(self, request, *args, **kwargs):
+        print('aqui')
+        id_cliente = dados_usuario(request)
+        conta = Conta.objects.get(fk_cliente_id=id_cliente)
+        id_conta = conta.id
+        cartao_cliente= Cartao.objects.filter(fk_conta_id = id_conta)
+        teste = serializers.serialize("json", cartao_cliente.all(), fields = ("numero", "CVV", "data_validade", "nome_titular", "bandeira"))
+        # print("mano", cartao_cliente)
+        print('meu', teste)
+        # cartao_cliente = request.data['fk_conta_id'] = id_conta
+        # teste = Cartao.objects.get(fk_cliente_id=id)
+        # print('oioio', cartao_cliente)
+        # return JsonResponse(teste, safe=False)
+        return super().list(request, *args, **kwargs)
     
 # Para proteger as rotas 
 # class ClienteViewSet(viewsets.ModelViewSet):

@@ -73,8 +73,9 @@ class Endereco(models.Model):
     fk_cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
 class Cartao(models.Model):
-    numero = models.IntegerField()
-    CVV = models.IntegerField()
-    data_validade = models.IntegerField()
-    nome_titular = models.IntegerField()
+    numero = models.IntegerField(unique=True)
+    CVV = models.IntegerField(unique=True)
+    data_validade = models.DateField()
+    nome_titular = models.CharField(unique=True, max_length=255)
+    bandeira = models.CharField(max_length=6)
     fk_conta = models.ForeignKey(Conta, on_delete=models.CASCADE)

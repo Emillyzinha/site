@@ -19,4 +19,4 @@ class EnderecoSerializer(serializers.ModelSerializer):
 class CartaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cartao
-        fields = ["numero", "CVV", "data_validade", "nome_titular", "fk_conta"]
+        fields = ["numero", "CVV", "data_validade", "nome_titular", "bandeira", "fk_conta"]
