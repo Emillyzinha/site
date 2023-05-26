@@ -21,7 +21,7 @@ function Login({ navigation }) {
             setToken(resposta.data.access)
             localStorage.setItem('token', JSON.stringify(resposta.data))
             // navigate('/edit')
-            navigation.navigate('Address')
+            navigation.navigate('Card')
 
         })
             .catch((erro) => {

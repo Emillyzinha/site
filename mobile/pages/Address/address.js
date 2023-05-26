@@ -17,7 +17,7 @@ function Address({ navigation }) {
     const [state, setState] = useState('')
     const [number, setNumber] = useState('')
     const [header, setHeader] = useState({})
-    const [token, setToken] = useState('')
+    const [renderiza, setRenderiza] = useState(false)
     let fk_cliente = 1
 
     let dados = localStorage.getItem('token')
@@ -63,7 +63,7 @@ function Address({ navigation }) {
 
         console.log('oioioioioioioioioioi', token)
 
-        
+
         let tokenAccess = token.access
         const testeToken = {
             headers: {
@@ -78,12 +78,14 @@ function Address({ navigation }) {
         axios.get('http://127.0.0.1:8000/auth/users/me/', // DESCOBRIR QUEM TA LOGADO
             testeToken)
             .then((res) => {
+                setRenderiza(false)
                 console.log('oir3', res)
 
             })
             .catch((erro) => {
                 console.log('oizinho', tokenAccess);
                 if (erro.response.status === 401) {
+                    setRenderiza(true)
                     axios.post('http://127.0.0.1:8000/auth/jwt/refresh/', { refresh: token.refresh }) // DAR O REFRESH
                         .then((res) => {
                             tokenAccess = res.data.access
@@ -112,7 +114,7 @@ function Address({ navigation }) {
             })
 
 
-    }, [CEP])
+    }, [renderiza, CEP])
 
     const createAddress = () => {
         if (CEP == null || neighborhood == null || country == null || city == null || street == null || state == null || number == null) {
@@ -130,23 +132,43 @@ function Address({ navigation }) {
                 fk_cliente: fk_cliente
             }, header)
                 .then((res) => {
-                    console.log('deu bom', res)
+                    if (res.data == "Account already has a card.") {
+                        alert('Account already has a card')
+                    }
+                    else{
+                        alert("Account created successfully!")
+                        console.log('deu bom', res)
+                    }
                 })
                 .catch((err) => {
-                    console.log('deu bem mal', err)
+                    if (res.data == "Account already has a card.") {
+                        alert('"Account already has a card."')
+                    }
+                    else {
+                        console.log('deu bem mal', err)
+                    }
                 })
         }
     }
 
     const teste = () => {
         axios.get('http://127.0.0.1:8000/bank/endereco/', header)
-        .then((res) => {
-            console.log(res)
-            console.log(res.data)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+            .then((res) => {
+                console.log(res)
+                console.log(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+
+        axios.get('http://127.0.0.1:8000/bank/cartao/', header)
+            .then((resC) => {
+                console.log('cartao', resC)
+                console.log('cartao1', resC.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
 

@@ -46,7 +46,8 @@ function Home({ navigation }) {
 
             <View style={estilosHome.movement}>
                 <Text style={estilosHome.textMovement}>Account movement</Text>
-                <ButtonMovement>Your Cards</ButtonMovement>
+                <ButtonMovement onPress={() => {navigation.navigate('Card')}}>Your Cards</ButtonMovement>
+                <ButtonMovement onPress={() => {navigation.navigate('Address')}}>Ask for card</ButtonMovement>
                 <ButtonMovement onPress={() => {navigation.navigate('Loan')}}>Loan</ButtonMovement>
                 <ButtonMovement>Extract</ButtonMovement>
             </View>

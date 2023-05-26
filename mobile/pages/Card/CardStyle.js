@@ -54,6 +54,16 @@ const stylesCard = StyleSheet.create({
         borderRadius: 10,
         color: 'rgba(0, 0, 0, 0.25)',
     },
+    fields: {
+        width: '100%',
+        marginTop: 30
+    },
+    numbers: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
 })
 
 export default stylesCard

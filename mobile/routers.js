@@ -22,8 +22,8 @@ function Routers() {
         <NavigationContainer>
             <Pilha.Navigator>
                 <Pilha.Screen
-                    name='Address'
-                    component={Address}
+                    name='Card'
+                    component={Card}
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen
@@ -32,18 +32,23 @@ function Routers() {
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen
+                    name='Address'
+                    component={Address}
+                    options={{ headerShown: false }}
+                />
+                <Pilha.Screen
                     name='Register'
                     component={Register}
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen
-                    name="Loan"
-                    component={Loan}
+                    name='Home'
+                    component={Home}
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen
-                    name='Card'
-                    component={Card}
+                    name="Loan"
+                    component={Loan}
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen
@@ -59,11 +64,6 @@ function Routers() {
                 <Pilha.Screen
                     name='ConfirmT'
                     component={ConfirmTransaction}
-                    options={{ headerShown: false }}
-                />
-                <Pilha.Screen
-                    name='Home'
-                    component={Home}
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen
