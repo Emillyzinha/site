@@ -66,6 +66,13 @@ class ContaCRUD(viewsets.ModelViewSet):
     queryset= Conta.objects.all()
     serializer_class = ContaSerializer
 
+    def list(self, request, *args, **kwargs):
+        print('aqui1')
+        id_cliente = dados_usuario(request)
+        conta = Conta.objects.filter(fk_cliente_id=id_cliente)
+        json_conta = serializers.serialize("json", conta.all(), fields = ["agencia", "numero", "status", "tipo", "saldo"])
+        return HttpResponse(json_conta)
+
 class EnderecoCRUD(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, )
     queryset= Endereco.objects.all()
@@ -103,8 +110,8 @@ class EnderecoCRUD(viewsets.ModelViewSet):
                 numero_cartao += num_cartao
 
             numero_CVV = ''
-            for i in range(0,9):
-                num_cvv = str(randint(0,3))
+            for i in range(0,3):
+                num_cvv = str(randint(0,9))
                 numero_CVV += num_cvv
 
             nome_cartao = cliente.nomeCompleto
@@ -148,14 +155,8 @@ class CartaoCRUD(viewsets.ModelViewSet):
         conta = Conta.objects.get(fk_cliente_id=id_cliente)
         id_conta = conta.id
         cartao_cliente= Cartao.objects.filter(fk_conta_id = id_conta)
-        teste = serializers.serialize("json", cartao_cliente.all(), fields = ("numero", "CVV", "data_validade", "nome_titular", "bandeira"))
-        # print("mano", cartao_cliente)
-        print('meu', teste)
-        # cartao_cliente = request.data['fk_conta_id'] = id_conta
-        # teste = Cartao.objects.get(fk_cliente_id=id)
-        # print('oioio', cartao_cliente)
-        # return JsonResponse(teste, safe=False)
-        return super().list(request, *args, **kwargs)
+        json_cartao = serializers.serialize("json", cartao_cliente.all(), fields = ["numero", "CVV", "data_validade", "nome_titular", "bandeira"])
+        return HttpResponse(json_cartao)
     
 # Para proteger as rotas 
 # class ClienteViewSet(viewsets.ModelViewSet):
