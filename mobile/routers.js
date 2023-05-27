@@ -14,6 +14,7 @@ import ConfirmTransaction from "./pages/ConfirmTransaction/ConfirmTransaction";
 import Unlock from "./pages/Unlock/Unlock";
 import Card from "./pages/Card/Card";
 import Address from "./pages/Address/address.js";
+import Value from "./components/Value/Value";
 
 const Pilha = createStackNavigator()
 
@@ -22,8 +23,13 @@ function Routers() {
         <NavigationContainer>
             <Pilha.Navigator>
                 <Pilha.Screen
-                    name='Card'
-                    component={Card}
+                    name='Value'
+                    component={Value}
+                    options={{ headerShown: false }}
+                />
+                <Pilha.Screen
+                    name='Home'
+                    component={Home}
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen
@@ -32,18 +38,18 @@ function Routers() {
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen
-                    name='Address'
-                    component={Address}
-                    options={{ headerShown: false }}
-                />
-                <Pilha.Screen
                     name='Register'
                     component={Register}
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen
-                    name='Home'
-                    component={Home}
+                    name='Card'
+                    component={Card}
+                    options={{ headerShown: false }}
+                />
+                <Pilha.Screen
+                    name='Address'
+                    component={Address}
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen

@@ -2,11 +2,12 @@ import { StyleSheet } from "react-native";
 
 const estilosHome = StyleSheet.create({
     pagina: {
-        display: 'flex',
         flex: 1,
+        display: 'flex',
         paddingTop: 50,
         padding: 20,
-        alignItems: "center"
+        alignItems: "center",
+        justifyContent: 'space-between',
     },
     topo: {
         width: '100%',

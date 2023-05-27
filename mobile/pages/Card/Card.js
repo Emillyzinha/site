@@ -16,6 +16,11 @@ function Card({ navigation }) {
     const [renderiza, setRenderiza] = useState(false)
     const [header, setHeader] = useState({})
     const [testee, setTeste] = useState({})
+    const [name, setName] = useState('')
+    const [number, setNumber] = useState('')
+    const [CVV, setCVV] = useState('')
+    const [validity, setValidity] = useState('')
+    const [flag, setFlag] = useState('')
 
     let dados = localStorage.getItem('token')
 
@@ -24,29 +29,47 @@ function Card({ navigation }) {
         if (dados != undefined) {
             token = JSON.parse(dados)
         }
-
-        console.log('oioioioioioioioioioi', token)
-
-
         let tokenAccess = token.access
         const testeToken = {
             headers: {
                 Authorization: `JWT ${tokenAccess}`
             },
         }
-        console.log('ACCESS', tokenAccess)
 
         setHeader(testeToken)
 
         axios.get('http://127.0.0.1:8000/auth/users/me/', // DESCOBRIR QUEM TA LOGADO
             testeToken)
             .then((res) => {
-                setRenderiza(false)
-                console.log('oir3', res)
+                axios.get('http://127.0.0.1:8000/bank/cartao/', testeToken)
+                    .then((res) => {
+                        setCVV(res.data[0].fields.CVV)
+                        setFlag(res.data[0].fields.bandeira)
+                        setValidity(res.data[0].fields.data_validade)
+                        setName(res.data[0].fields.nome_titular)
+                        setNumber(res.data[0].fields.numero)
+                        console.log(res.data[0].fields.CVV)
+                    })
+                    .catch((err) => {
+                        console.log('deu ruim2', err);
+                        console.log(header)
+                    })
+
+
+                axios.get('http://127.0.0.1:8000/bank/cartao/', header)
+                    .then((res) => {
+                        console.log(res)
+                        console.log(res.data)
+                        console.log('oi', res.data[0].fields)
+                        setTeste(res.data)
+                    })
+                    .catch((err) => {
+                        console.log('entrou');
+                        console.log(err)
+                    })
 
             })
             .catch((erro) => {
-                console.log('oizinho', tokenAccess);
                 if (erro.response.status === 401) {
                     setRenderiza(true)
                     axios.post('http://127.0.0.1:8000/auth/jwt/refresh/', { refresh: token.refresh }) // DAR O REFRESH
@@ -57,52 +80,49 @@ function Card({ navigation }) {
                                     Authorization: `JWT ${tokenAccess}`
                                 },
                             }
-                            console.log('NO REFRESH', res)
 
                             setHeader(testeToken)
-
-
+                            console.log('oi')
+                            axios.get('http://127.0.0.1:8000/bank/cartao/', testeToken)
+                                .then((res) => {
+                                    setCVV(res.data[0].fields.CVV)
+                                    setFlag(res.data[0].fields.bandeira)
+                                    setValidity(res.data[0].fields.data_validade)
+                                    setName(res.data[0].fields.nome_titular)
+                                    setNumber(res.data[0].fields.numero)
+                                    console.log(res.data[0].fields.CVV)
+                                })
+                                .catch((err) => {
+                                    console.log('deu ruim2', err);
+                                    console.log(header)
+                                })
                         }
                         ).catch((erro) => {
+                            console.log('entrou4');
                             console.log('errooioioioio', erro)
                         })
                 } else {
                     console, log('oi', erro)
                 }
             })
+
     }, [])
-
-    const teste = () => {
-        axios.get('http://127.0.0.1:8000/bank/cartao/', header)
-            .then((res) => {
-                console.log(res)
-                console.log(res.data)
-                console.log(res.data[30])
-                setTeste(res.data)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }
-
 
     return (
         <View style={stylesCard.screen}>
             <TopPages image={cardTitle} text='Your cards' />
             <View style={stylesCard.fields}>
-                <CampoImutavel title='Name' text='teste' width={'100%'} sizeTitle={30} />
-                <CampoImutavel title='Number Card' text='teste' width={'100%'} sizeTitle={30} />
+                <CampoImutavel title='Name' text={name} width={'100%'} sizeTitle={30} />
+                <CampoImutavel title='Number Card' text={number} width={'100%'} sizeTitle={30} />
+                <CampoImutavel title='Flag' text={flag} width={'100%'} sizeTitle={30} />
                 <View style={stylesCard.numbers}>
-                    <CampoImutavel title='CVV' text='teste' width={'48%'} sizeTitle={30} />
-                    <CampoImutavel title='Validity' text='teste' width={'48%'} sizeTitle={30} />
+                    <CampoImutavel title='CVV' text={CVV} width={'48%'} sizeTitle={30} />
+                    <CampoImutavel title='Validity' text={validity} width={'48%'} sizeTitle={30} />
                 </View>
             </View>
             <View style={stylesCard.cardView}>
                 <Image source={card} style={stylesCard.image} />
             </View>
-
-            <Button onPress={() => teste()}>Enter</Button>
-
         </View>
     )
 }
