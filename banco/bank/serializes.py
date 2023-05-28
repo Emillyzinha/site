@@ -20,3 +20,8 @@ class CartaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cartao
         fields = ["numero", "CVV", "data_validade", "nome_titular", "bandeira", "fk_conta"]
+
+class EmprestimoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Emprestimo
+    fields = ["valor", "fk_conta", "qtd_parcela", "valor_parcelas", "juros"]

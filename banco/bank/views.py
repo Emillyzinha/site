@@ -45,8 +45,6 @@ class ClienteCRUD(viewsets.ModelViewSet):
         usuario = dados['user_id']
         print(usuario)
 
-        
-
         # PARA SALVAR EM DIRETO EM UMA FOREIGN KEY
 
         # conta = Conta.objects.get(cliente=usuario) -- para a conta do usuario (so tem uma conta)
@@ -129,21 +127,6 @@ class EnderecoCRUD(viewsets.ModelViewSet):
 
         return super().create(request, *args, **kwargs)
 
-    
-    # def list(self, request, *args, **kwargs):
-    #     token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[1]
-    #     print('hereeeeeeeeeeeeee', token)
-    #     dados = AccessToken(token)
-    #     print(dados)
-    #     usuario = dados['user_id']
-    #     print(usuario)
-
-    #     contaTeste = Conta.objects.get(fk_cliente=usuario)
-    #     enderecoTeste = Endereco.objects.all()
-    #     enderecoTeste.fk_conta = contaTeste.id
-    #     print('oioio', enderecoTeste)
-    #     return super().list(request, *args, **kwargs)
-
 class CartaoCRUD(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, )
     queryset= Cartao.objects.all()
@@ -157,6 +140,49 @@ class CartaoCRUD(viewsets.ModelViewSet):
         cartao_cliente= Cartao.objects.filter(fk_conta_id = id_conta)
         json_cartao = serializers.serialize("json", cartao_cliente.all(), fields = ["numero", "CVV", "data_validade", "nome_titular", "bandeira"])
         return HttpResponse(json_cartao)
+    
+class EmprestimoCRUD(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated, )
+    queryset= Emprestimo.objects.all()
+    serializer_class = EmprestimoSerializer
+
+    def create(self, request, *args, **kwargs):
+        id_cliente = dados_usuario(request)
+        conta = Conta.objects.get(fk_cliente_id=id_cliente)
+        id_conta = conta.id
+        request.data['fk_conta_id'] = id_conta
+
+        saldo_cliente = conta.saldo
+        valor_emprestimo = request.data['valor']
+        valor_emprestimo = int(valor_emprestimo)
+        juros_emprestimo = request.data['juros']
+        qtd_parcelas = request.data['qtd_parcela']
+
+        parcela_emprestimo = (valor_emprestimo * juros_emprestimo) / qtd_parcelas
+
+        if parcela_emprestimo > saldo_cliente:
+            return HttpResponse('It is not possible to make a loan with an installment greater than your balance')
+        else: 
+            request.POST._mutable = True
+            uma_vez = valor_emprestimo * juros_emprestimo
+            duas_vezes = (valor_emprestimo * juros_emprestimo) / 2
+            tres_vezes = (valor_emprestimo * juros_emprestimo) / 3
+            quatro_vezes = (valor_emprestimo * juros_emprestimo) / 4
+            cinco_vezes = (valor_emprestimo * juros_emprestimo) / 5
+            seis_vezes = (valor_emprestimo * juros_emprestimo) / 6
+            print('aconteceu')
+
+        return super().create(request, *args, **kwargs)
+
+    # def list(self, request, *args, **kwargs):
+    #     print('aqui')
+    #     id_cliente = dados_usuario(request)
+    #     conta = Conta.objects.get(fk_cliente_id=id_cliente)
+    #     id_conta = conta.id
+    #     emprestimo = Emprestimo.objects.filter(fk_conta_id = id_conta)
+    #     json_emprestimo = serializers.serialize("json", emprestimo.all(), fields = ["valor", "qtd_parcela", "valor_parcelas", "juros"])
+    #     return HttpResponse(json_emprestimo)
+
     
 # Para proteger as rotas 
 # class ClienteViewSet(viewsets.ModelViewSet):

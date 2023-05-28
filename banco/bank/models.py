@@ -79,3 +79,11 @@ class Cartao(models.Model):
     nome_titular = models.CharField(unique=True, max_length=255)
     bandeira = models.CharField(max_length=6)
     fk_conta = models.ForeignKey(Conta, on_delete=models.CASCADE)
+
+class Emprestimo(models.Model):
+    valor = models.IntegerField()
+    fk_conta = models.ForeignKey(Conta, on_delete=models.CASCADE)
+    qtd_parcela = models.IntegerField()
+    valor_parcelas = models.IntegerField()
+    juros = models.IntegerField()
+    
