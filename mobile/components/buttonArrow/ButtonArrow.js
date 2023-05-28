@@ -2,9 +2,9 @@ import { ImageBackground, Text, TouchableOpacity } from "react-native"
 import imageArrow from '../../assets/arrow.png'
 import stylesButtonArrow from "./ButtonArrowStyle"
 
-function ButtonArrow () {
+function ButtonArrow ({onPress}) {
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onPress}>
             <ImageBackground source={imageArrow} style={stylesButtonArrow.imageButton}/>
         </TouchableOpacity>
     )

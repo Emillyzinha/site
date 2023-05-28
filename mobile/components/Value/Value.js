@@ -2,18 +2,20 @@ import { Image, Text, View } from "react-native"
 import styleValue from "./ValueStyle"
 import TopPages from "../TopTransaction/TopTransaction"
 
-import imageLoan from '../../assets/loan.png'
 import CampoInput from "../campoInput/campoInput"
 import ButtonArrow from "../buttonArrow/ButtonArrow"
+import { useState } from "react"
 
-const Value = ({ image, text }) => {
+const Value = ({ navigation, route }) => {
+    const { img, textImage, title, navigateTo } = route.params
+    const [value, setValue ] = useState(0)
     return (
         <View style={styleValue.screen}>
-            <TopPages image={imageLoan} text='Loan' />
-            <Text style={styleValue.title}>Value</Text>
-            <CampoInput />
+            <TopPages image={img} text={textImage} />
+            <Text style={styleValue.title}>{title}</Text>
+            <CampoInput onChange={(e) => setValue(e.target.value)} />
             <View style={styleValue.spaceButton}>
-                <ButtonArrow />
+                <ButtonArrow onPress={() => navigation.navigate(navigateTo, { value: value })} />
             </View>
         </View>
     )

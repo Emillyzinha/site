@@ -16,6 +16,7 @@ import imageTransfer from '../../assets/imgTransfer.png'
 import imageBarras from '../../assets/codigoBarras.png'
 import imageRecharge from '../../assets/imgRecharge.png'
 import grafico from '../../assets/grafico.png'
+import imageLoan from '../../assets/loan.png'
 import { useEffect, useState } from "react"
 import axios from "axios"
 
@@ -133,7 +134,7 @@ function Home({ navigation }) {
                 :
                 <ButtonMovement onPress={() => { navigation.navigate('Address') }}>Ask for card</ButtonMovement>
             }
-                <ButtonMovement onPress={() => { navigation.navigate('Value') }}>Loan</ButtonMovement>
+                <ButtonMovement onPress={() => { navigation.navigate('Value',  { img: imageLoan, title: 'Value', textImage: 'Loan', navigateTo: 'Loan'})}}>Loan</ButtonMovement>
                 <ButtonMovement>Extract</ButtonMovement>
             </View>
 
