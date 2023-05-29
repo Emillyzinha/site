@@ -28,8 +28,18 @@ function Routers() {
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen
+                    name='Login'
+                    component={Login}
+                    options={{ headerShown: false }}
+                />
+                <Pilha.Screen
                     name='Register'
                     component={Register}
+                    options={{ headerShown: false }}
+                />
+                <Pilha.Screen
+                    name='ConfirmT'
+                    component={ConfirmTransaction}
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen
@@ -40,11 +50,6 @@ function Routers() {
                 <Pilha.Screen
                     name='Value'
                     component={Value}
-                    options={{ headerShown: false }}
-                />
-                <Pilha.Screen
-                    name='Login'
-                    component={Login}
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen
@@ -65,11 +70,6 @@ function Routers() {
                 <Pilha.Screen
                     name='Desbloquear'
                     component={Unlock}
-                    options={{ headerShown: false }}
-                />
-                <Pilha.Screen
-                    name='ConfirmT'
-                    component={ConfirmTransaction}
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen

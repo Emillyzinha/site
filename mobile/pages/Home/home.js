@@ -96,7 +96,7 @@ function Home({ navigation }) {
                     console, log('oi', erro)
                 }
             })
-
+  
     }, [])
 
     console.log('teste', haveCard)

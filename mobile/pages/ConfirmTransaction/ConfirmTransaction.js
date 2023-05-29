@@ -4,9 +4,16 @@ import TopTransaction from "../../components/TopTransaction/TopTransaction"
 import imagePadlock from '../../assets/padlock.png'
 import CampoInput from "../../components/campoInput/campoInput"
 import ButtonArrow from "../../components/buttonArrow/ButtonArrow"
+import { useEffect, useState } from "react"
 
 function ConfirmTransaction({ route, navigation }) {
-    const { image, text } = route.params
+    const { image, text, transaction } = route.params
+    const [teste, setTeste] = useState()
+    useEffect(() => {
+        setTeste(console.log('ola'))
+    })
+    
+
     return (
         <View style={styleConfirmTransaction.screen}>
             <View>
@@ -20,11 +27,10 @@ function ConfirmTransaction({ route, navigation }) {
                 <CampoInput />
 
                 <View style={styleConfirmTransaction.placeButton}>
-                    <ButtonArrow />
+                    <ButtonArrow onPress={transaction} />
                 </View>
 
             </View>
-
 
             <TouchableOpacity style={styleConfirmTransaction.buttonPassword}>
                 <Text style={styleConfirmTransaction.textButtonPassword}>Enter with the password of cellphone</Text>
