@@ -15,6 +15,7 @@ import Unlock from "./pages/Unlock/Unlock";
 import Card from "./pages/Card/Card";
 import Address from "./pages/Address/address.js";
 import Value from "./components/Value/Value";
+import Transfer from "./pages/Transfer/Transfer";
 
 const Pilha = createStackNavigator()
 
@@ -30,6 +31,11 @@ function Routers() {
                 <Pilha.Screen
                     name='Login'
                     component={Login}
+                    options={{ headerShown: false }}
+                />
+                <Pilha.Screen
+                    name='Transfer'
+                    component={Transfer}
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen

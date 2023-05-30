@@ -12,7 +12,8 @@ import imagePadlock from '../../assets/padlock.png'
 function Loan({ navigation, route }) {
     const { value } = route.params
     const [qtdParcela, setQtdParcela] = useState(0)
-    const [header, setHeader] = useState(0)
+    const [header, setHeader] = useState({})
+    const [password, setPassword] = useState({})
 
     const [valorParcela, setParcela] = useState(0)
     const [once, setOnce] = useState(0)
@@ -82,7 +83,7 @@ function Loan({ navigation, route }) {
                             console.log('oi')
                             axios.get('http://127.0.0.1:8000/auth/users/me/', testeToken)
                                 .then((res) => {
-                                    console.log(res.data)
+                                    console.log('oi', res)
                                 })
                                 .catch((err) => {
                                     console.log('deu ruim2', err);
@@ -103,8 +104,14 @@ function Loan({ navigation, route }) {
     }, [])
 
     const transaction = () => {
+        if (passwordUser == password) {
+            console.log('foi')
+        }
+        else{
+            console.log('não')
+        }
         console.log('aqui')
-        axios.post('http://127.0.0.1:8000/bank/loan/', {
+        axios.post('http://127.0.0.1:8000/bank/emprestimo/', {
             valor: value,
             qtd_parcela: qtdParcela,
             valor_parcelas: valorParcela,
@@ -120,8 +127,7 @@ function Loan({ navigation, route }) {
     }
 
     const [teste, setTeste] = useState(false)
-
-    // navigation.navigate('ConfirmT', { image: imageLoan, text: 'Loan', transaction: console.log('aqui') })
+    const [passwordUser, setPasswordUser] = useState(false)
 
     console.log('fora', teste)
     return (
@@ -149,7 +155,7 @@ function Loan({ navigation, route }) {
                             <Image source={imagePadlock} style={styleLoan.image} />
                         </View>
 
-                        <CampoInput />
+                        <CampoInput onChange={((e) => setPasswordUser(e))} />
 
                         <View style={styleLoan.placeButton}>
                             <ButtonArrow onPress={() => transaction()} />

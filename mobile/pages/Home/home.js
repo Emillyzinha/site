@@ -42,11 +42,20 @@ function Home({ navigation }) {
 
         setHeader(testeToken)
 
+        axios.get('http://127.0.0.1:8000/bank/conta/', testeToken)
+            .then((res) => {
+                console.log('conta', res.data[0].fields.saldo)
+                setBalance(res.data[0].fields.saldo)
+            })
+            .catch((err) => {
+                console.log('deu ruim2', err);
+                console.log(header)
+            })
+
         axios.get('http://127.0.0.1:8000/auth/users/me/', // DESCOBRIR QUEM TA LOGADO
             testeToken)
             .then((res) => {
                 setName(res.data.username)
-
             })
             .catch((erro) => {
                 if (erro.response.status === 401) {
@@ -96,7 +105,7 @@ function Home({ navigation }) {
                     console, log('oi', erro)
                 }
             })
-  
+
     }, [])
 
     console.log('teste', haveCard)
@@ -117,24 +126,24 @@ function Home({ navigation }) {
 
             <View style={estilosHome.balance}>
                 <Text style={estilosHome.textBalance}>Balance</Text>
-                <Text style={estilosHome.valeuBalance}>$ {balance},00</Text>
+                <Text style={estilosHome.valeuBalance}>$ {balance}</Text>
             </View>
 
             <View style={estilosHome.opcoesTransacoes}>
                 <OpcoesTransacoes img={imagePix} fontSize={25} width={55} height={55}>Pix</OpcoesTransacoes>
                 <OpcoesTransacoes img={imageBarras} fontSize={25} width={60} height={60}>Ticket</OpcoesTransacoes>
                 <OpcoesTransacoes img={imageRecharge} fontSize={20} width={60} height={60}>Recharge</OpcoesTransacoes>
-                <OpcoesTransacoes img={imageTransfer} fontSize={20} width={40} height={70}>Transfer</OpcoesTransacoes>
+                <OpcoesTransacoes img={imageTransfer} fontSize={20} width={60} height={60} onClick={() => navigation.navigate('Value', { img: imageTransfer, title: 'Value', textImage: 'Transfer ', navigateTo: 'Transfer' })}>Transfer</OpcoesTransacoes>
             </View>
 
             <View style={estilosHome.movement}>
                 <Text style={estilosHome.textMovement}>Account movement</Text>
-                {haveCard ? 
-                <ButtonMovement onPress={() => { navigation.navigate('Card') }}>Your Cards</ButtonMovement>
-                :
-                <ButtonMovement onPress={() => { navigation.navigate('Address') }}>Ask for card</ButtonMovement>
-            }
-                <ButtonMovement onPress={() => { navigation.navigate('Value',  { img: imageLoan, title: 'Value', textImage: 'Loan', navigateTo: 'Loan'})}}>Loan</ButtonMovement>
+                {haveCard ?
+                    <ButtonMovement onPress={() => { navigation.navigate('Card') }}>Your Cards</ButtonMovement>
+                    :
+                    <ButtonMovement onPress={() => { navigation.navigate('Address') }}>Ask for card</ButtonMovement>
+                }
+                <ButtonMovement onPress={() => { navigation.navigate('Value', { img: imageLoan, title: 'Value', textImage: 'Loan', navigateTo: 'Loan' }) }}>Loan</ButtonMovement>
                 <ButtonMovement>Extract</ButtonMovement>
             </View>
 
