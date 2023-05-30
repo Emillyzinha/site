@@ -8,6 +8,8 @@ router.register('conta', ContaCRUD)
 router.register('cartao', CartaoCRUD)
 router.register('endereco', EnderecoCRUD)
 router.register('emprestimo', EmprestimoCRUD)
+router.register('transferencia', TransferenciaCRUD)
+router.register('extrato', ExtratoCRUD)
 
 
 urlpatterns =[] + router.urls

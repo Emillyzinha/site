@@ -24,4 +24,14 @@ class CartaoSerializer(serializers.ModelSerializer):
 class EmprestimoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Emprestimo
-    fields = ["valor", "fk_conta", "qtd_parcela", "valor_parcelas", "juros"]
+        fields = ["valor", "qtd_parcela", "valor_parcelas", "juros", "fk_conta"]
+
+class TransferenciaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transferencia
+        fields = ["valor", "destinatarioCPF", "fk_conta", "nomeCompleto"]
+
+class ExtratoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Extrato
+        fields = ["transacao", "valor", "nomeCompleto", "data", "fk_conta"]

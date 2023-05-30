@@ -3,14 +3,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from random import randint
 
 class CustomUserManager(BaseUserManager):
-    """
-    Custom user model manager where email is the unique identifiers
-    for authentication instead of usernames.
-    """
     def create_user(self, email, password=None, **extra_fields):
-        """
-        Create and save a user with the given email and password.
-        """
         if not email:
             raise ValueError(("The e-mail must be set"))
         email = self.normalize_email(email)
@@ -58,11 +51,10 @@ class Conta(models.Model):
     # limite = 
     status = models.BooleanField()
     tipo = models.CharField(max_length=1, choices=tipos_conta, default=CORRENTE)
-    saldo = models.IntegerField()
+    saldo = models.DecimalField(max_digits=10, decimal_places=2)
     fk_cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
 class Endereco(models.Model):
-    # CADE O ADMIN
     cep = models.IntegerField()  
     pais = models.CharField(max_length=255)  
     estado = models.CharField(max_length=255)  
@@ -81,9 +73,31 @@ class Cartao(models.Model):
     fk_conta = models.ForeignKey(Conta, on_delete=models.CASCADE)
 
 class Emprestimo(models.Model):
-    valor = models.IntegerField()
-    fk_conta = models.ForeignKey(Conta, on_delete=models.CASCADE)
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
     qtd_parcela = models.IntegerField()
-    valor_parcelas = models.IntegerField()
+    valor_parcelas = models.DecimalField(max_digits=10, decimal_places=2)
     juros = models.IntegerField()
-    
+    fk_conta = models.ForeignKey(Conta, on_delete=models.CASCADE)
+
+class Transferencia(models.Model):
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    destinatarioCPF = models.IntegerField()
+    nomeCompleto = models.CharField(max_length=255)
+    fk_conta = models.ForeignKey(Conta, on_delete=models.CASCADE)
+
+class Extrato(models.Model):
+    TRANSFERENCIA = 'T'
+    EMPRESTIMO = 'E'
+    PIX = 'P'
+
+    tipos_conta = (
+        (TRANSFERENCIA, 'Transferência'),
+        (EMPRESTIMO, 'Empréstimo'),
+        (PIX, 'Pix')
+    )
+
+    transacao = models.CharField(max_length=1, choices=tipos_conta, default=EMPRESTIMO)
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    nomeCompleto = models.CharField(max_length=255)
+    data = models.DateField(auto_now=True)
+    fk_conta = models.ForeignKey(Conta, on_delete=models.CASCADE)

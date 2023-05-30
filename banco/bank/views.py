@@ -1,3 +1,4 @@
+import decimal
 from django.shortcuts import render
 from django.http import JsonResponse
 from .models import *
@@ -38,12 +39,15 @@ class ClienteCRUD(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         # PARA VER QUEM É O AUTOR DO TOKEN
         # o split separa em uma lista
-        token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[1]
-        print('aquiiiiiiiiiii', token)
-        dados = AccessToken(token)
-        print(dados)
-        usuario = dados['user_id']
-        print(usuario)
+        # token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[1]
+        # print('aquiiiiiiiiiii', token)
+        # dados = AccessToken(token)
+        # print(dados)
+        # usuario = dados['user_id']
+        # print(usuario)
+
+        dados_usuario(request)
+        
 
         # PARA SALVAR EM DIRETO EM UMA FOREIGN KEY
 
@@ -65,7 +69,6 @@ class ContaCRUD(viewsets.ModelViewSet):
     serializer_class = ContaSerializer
 
     def list(self, request, *args, **kwargs):
-        print('aqui1')
         id_cliente = dados_usuario(request)
         conta = Conta.objects.filter(fk_cliente_id=id_cliente)
         json_conta = serializers.serialize("json", conta.all(), fields = ["agencia", "numero", "status", "tipo", "saldo"])
@@ -75,18 +78,6 @@ class EnderecoCRUD(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, )
     queryset= Endereco.objects.all()
     serializer_class = EnderecoSerializer
-
-    # def list(self, request, *args, **kwargs):
-    #     id_cliente = dados_usuario(request)
-    #     id_cliente_endereco = request.data['fk_cliente'] = id_cliente
-    #     if id_cliente_endereco.exists():
-    #         print('-'*50)
-    #         print('existe')
-    #     elif id_cliente_endereco.DoesNotExist():
-    #         print('-'*50)
-    #         print('não existe')
-
-    #     return super().list(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
 
@@ -108,8 +99,8 @@ class EnderecoCRUD(viewsets.ModelViewSet):
                 numero_cartao += num_cartao
 
             numero_CVV = ''
-            for i in range(0,3):
-                num_cvv = str(randint(0,9))
+            for i in range(0,9):
+                num_cvv = str(randint(0,3))
                 numero_CVV += num_cvv
 
             nome_cartao = cliente.nomeCompleto
@@ -133,7 +124,6 @@ class CartaoCRUD(viewsets.ModelViewSet):
     serializer_class = CartaoSerializer
 
     def list(self, request, *args, **kwargs):
-        print('aqui')
         id_cliente = dados_usuario(request)
         conta = Conta.objects.get(fk_cliente_id=id_cliente)
         id_conta = conta.id
@@ -149,66 +139,48 @@ class EmprestimoCRUD(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         id_cliente = dados_usuario(request)
         conta = Conta.objects.get(fk_cliente_id=id_cliente)
-        id_conta = conta.id
-        request.data['fk_conta_id'] = id_conta
-
-        saldo_cliente = conta.saldo
-        valor_emprestimo = request.data['valor']
-        valor_emprestimo = int(valor_emprestimo)
-        juros_emprestimo = request.data['juros']
-        qtd_parcelas = request.data['qtd_parcela']
-
-        parcela_emprestimo = (valor_emprestimo * juros_emprestimo) / qtd_parcelas
-
-        if parcela_emprestimo > saldo_cliente:
-            return HttpResponse('It is not possible to make a loan with an installment greater than your balance')
-        else: 
-            request.POST._mutable = True
-            uma_vez = valor_emprestimo * juros_emprestimo
-            duas_vezes = (valor_emprestimo * juros_emprestimo) / 2
-            tres_vezes = (valor_emprestimo * juros_emprestimo) / 3
-            quatro_vezes = (valor_emprestimo * juros_emprestimo) / 4
-            cinco_vezes = (valor_emprestimo * juros_emprestimo) / 5
-            seis_vezes = (valor_emprestimo * juros_emprestimo) / 6
-            print('aconteceu')
-
+        valor_emprestimo = decimal.Decimal(request.data['valor'])
+        conta.saldo += valor_emprestimo
+        conta.save() 
         return super().create(request, *args, **kwargs)
 
-    # def list(self, request, *args, **kwargs):
-    #     print('aqui')
-    #     id_cliente = dados_usuario(request)
-    #     conta = Conta.objects.get(fk_cliente_id=id_cliente)
-    #     id_conta = conta.id
-    #     emprestimo = Emprestimo.objects.filter(fk_conta_id = id_conta)
-    #     json_emprestimo = serializers.serialize("json", emprestimo.all(), fields = ["valor", "qtd_parcela", "valor_parcelas", "juros"])
-    #     return HttpResponse(json_emprestimo)
+class TransferenciaCRUD(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated, )
+    queryset= Transferencia.objects.all()
+    serializer_class = TransferenciaSerializer
 
-    
-# Para proteger as rotas 
-# class ClienteViewSet(viewsets.ModelViewSet):
-#     queryset = Cliente.objects.all()
-#     serializer_class = ClienteSerializer
-#     permission_classes = (IsAuthenticated, )
+    def create(self, request, *args, **kwargs):
+        id_cliente = dados_usuario(request)
+        conta_remetente = Conta.objects.get(fk_cliente_id=id_cliente)
+        saldo_remetente = decimal.Decimal(conta_remetente.saldo)
 
-#     def list(self, request, *args, **kwargs):
-#                 # PARA VER QUEM É O AUTOR DO TOKEN
+        nomeInputCliente = request.data['nomeCompleto']
+        cpfInputCliente = request.data['destinatarioCPF']
 
-#                 # o split separa em uma lista
-#         token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[1]
-#         print('aquiiiiiiiiiii', token)
-#         dados = AccessToken(token)
-#         print(dados)
-#         usuario = dados['user_id']
-#         print(usuario)
+        valor_transferencia = decimal.Decimal(request.data['valor'])
 
-#                 # conta = Conta.objects.get(cliente=usuario) -- para a conta do usuario (so tem uma conta)
-#                 # conta = Conta.objects.filter(cliente=usuario) -- para pegar. retorna lista
-#                 # return Response(conta)
+        nome_cliente_existe = Cliente.objects.filter(nomeCompleto=nomeInputCliente).exists()
+        cpf_cliente_existe = Cliente.objects.filter(cpf=cpfInputCliente).exists()
 
-#         return super().list(request, *args, **kwargs)
-    
-#             # com base no ID do usuário que fez a requisição inserir dados em tabelas, fazer consultas (objects)
-    
-#     def create(self, request, *args, **kwargs):
+        if nome_cliente_existe and cpf_cliente_existe and valor_transferencia < saldo_remetente:
+            id_destinatario = Cliente.objects.get(cpf=cpfInputCliente).id
+            request.data['fk_conta'] = id_destinatario
+            request.POST._mutable = True
 
-#         return super().create(request, *args, **kwargs)
+            conta_remetente.saldo -= valor_transferencia
+            conta_remetente.save()
+
+            destinatario = Cliente.objects.get(nomeCompleto=nomeInputCliente)
+            conta_destinatario = Conta.objects.get(fk_cliente_id=destinatario.id)
+            print('aqyu', destinatario.id)
+            conta_destinatario.saldo += valor_transferencia
+            conta_destinatario.save()
+
+            return super().create(request, *args, **kwargs)
+        else:
+            return HttpResponse('Customer does not exist.')
+
+class ExtratoCRUD(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated, )
+    queryset= Extrato.objects.all()
+    serializer_class = ExtratoSerializer
