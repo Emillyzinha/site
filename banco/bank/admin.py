@@ -3,7 +3,7 @@ from .models import *
 # from django.contrib.auth.admin import ClienteDoBancoAdmin
 # from .models import User
 
-admin.site.register(ClienteDoBanco)
+admin.site.register(Cliente)
 
 # @admin.register(models.ClienteDoBanco)
 # class ClienteDoBancoAdmin(admin.ModelAdmin):

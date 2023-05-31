@@ -9,7 +9,7 @@ router.register('cartao', CartaoCRUD)
 router.register('endereco', EnderecoCRUD)
 router.register('emprestimo', EmprestimoCRUD)
 router.register('transferencia', TransferenciaCRUD)
-router.register('extrato', ExtratoCRUD)
+router.register('movimentacao', MovimentacaoCRUD)
 
 
 urlpatterns =[] + router.urls

@@ -20,15 +20,11 @@ class CustomUserManager(BaseUserManager):
         return user
 
 class Cliente(AbstractUser):
-    # class Meta:
-        # verbose_name_plural = "ClienteDoBanco"
-
     nomeCompleto = models.CharField(max_length=255, blank=False)
     data_nascimento = models.DateField(blank=False)
     cpf = models.CharField(max_length=14, blank=False, unique=True)
     numero_telefone = models.CharField(max_length=20, blank=False)
     email = models.EmailField(unique=True, blank=False)
-    # senha = models.CharField(max_length=255, blank=False)
 
     USERNAME_FIELD = "cpf"
     REQUIRED_FIELDS = ["nomeCompleto", "username", "data_nascimento", "numero_telefone", "email", "password"]
@@ -48,7 +44,6 @@ class Conta(models.Model):
 
     agencia = models.CharField(max_length=4)
     numero = models.IntegerField(unique=True)
-    # limite = 
     status = models.BooleanField()
     tipo = models.CharField(max_length=1, choices=tipos_conta, default=CORRENTE)
     saldo = models.DecimalField(max_digits=10, decimal_places=2)
@@ -85,18 +80,18 @@ class Transferencia(models.Model):
     nomeCompleto = models.CharField(max_length=255)
     fk_conta = models.ForeignKey(Conta, on_delete=models.CASCADE)
 
-class Extrato(models.Model):
-    TRANSFERENCIA = 'T'
+class Movimentacao(models.Model):
+    TRANSFERENCIA = 'F'
     EMPRESTIMO = 'E'
     PIX = 'P'
 
-    tipos_conta = (
+    tipos_transacoes = (
         (TRANSFERENCIA, 'Transferência'),
         (EMPRESTIMO, 'Empréstimo'),
         (PIX, 'Pix')
     )
 
-    transacao = models.CharField(max_length=1, choices=tipos_conta, default=EMPRESTIMO)
+    transacao = models.CharField(max_length=1, choices=tipos_transacoes, default=EMPRESTIMO)
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     nomeCompleto = models.CharField(max_length=255)
     data = models.DateField(auto_now=True)

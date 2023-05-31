@@ -31,7 +31,7 @@ class TransferenciaSerializer(serializers.ModelSerializer):
         model = Transferencia
         fields = ["valor", "destinatarioCPF", "fk_conta", "nomeCompleto"]
 
-class ExtratoSerializer(serializers.ModelSerializer):
+class MovimentacaoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Extrato
-        fields = ["transacao", "valor", "nomeCompleto", "data", "fk_conta"]
+        model = Movimentacao
+        fields = ["valor", "nomeCompleto", "data", "fk_conta"]

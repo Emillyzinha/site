@@ -37,27 +37,9 @@ class ClienteCRUD(viewsets.ModelViewSet):
         return super().get_queryset()
 
     def list(self, request, *args, **kwargs):
-        # PARA VER QUEM É O AUTOR DO TOKEN
-        # o split separa em uma lista
-        # token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[1]
-        # print('aquiiiiiiiiiii', token)
-        # dados = AccessToken(token)
-        # print(dados)
-        # usuario = dados['user_id']
-        # print(usuario)
-
         dados_usuario(request)
-        
-
-        # PARA SALVAR EM DIRETO EM UMA FOREIGN KEY
-
-        # conta = Conta.objects.get(cliente=usuario) -- para a conta do usuario (so tem uma conta)
-        # conta = Conta.objects.filter(cliente=usuario) -- para pegar. retorna lista
-        # return Response(conta)
 
         return super().list(request, *args, **kwargs)
-    
-        # com base no ID do usuário que fez a requisição inserir dados em tabelas, fazer consultas (objects)
     
     def create(self, request, *args, **kwargs):
 
@@ -172,15 +154,28 @@ class TransferenciaCRUD(viewsets.ModelViewSet):
 
             destinatario = Cliente.objects.get(nomeCompleto=nomeInputCliente)
             conta_destinatario = Conta.objects.get(fk_cliente_id=destinatario.id)
-            print('aqyu', destinatario.id)
             conta_destinatario.saldo += valor_transferencia
             conta_destinatario.save()
+
+            Movimentacao.objects.create(transacao='Transferência', valor=valor_transferencia, nomeCompleto=nomeInputCliente, fk_conta=conta_remetente)
 
             return super().create(request, *args, **kwargs)
         else:
             return HttpResponse('Customer does not exist.')
 
-class ExtratoCRUD(viewsets.ModelViewSet):
+class MovimentacaoCRUD(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, )
-    queryset= Extrato.objects.all()
-    serializer_class = ExtratoSerializer
+    queryset= Movimentacao.objects.all()
+    serializer_class = MovimentacaoSerializer
+
+    def list(self, request, *args, **kwargs):
+        id_cliente = dados_usuario(request)
+        conta = Conta.objects.get(fk_cliente=id_cliente)
+        id_conta = conta.id
+        transferencia = Transferencia.objects.filter(fk_conta=id_conta)
+        movimentacao_transferencia = Movimentacao.objects.filter(fk_conta=id_conta)
+        print('aqui', movimentacao_transferencia)
+        json_movimentacao = serializers.serialize("json", movimentacao_transferencia.all(), fields = ["transacao", "valor", "nomeCompleto", "data", "fk_conta"])
+        return HttpResponse(json_movimentacao)
+        # return movimentacao_transferencia
+        # return super().list(request, *args, **kwargs)
