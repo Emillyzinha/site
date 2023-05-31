@@ -72,7 +72,7 @@ const Value = ({ navigation, route }) => {
             alert('Enter the amount you want to send')
         }
         else {
-            if (value_int > balance){
+            if (value_int > balance && title=='Transfer'){
                 alert('Enter an available amount')
             }else{
                 navigation.navigate(navigateTo, { value: value })

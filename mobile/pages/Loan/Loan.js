@@ -119,7 +119,8 @@ function Loan({ navigation, route }) {
             fk_conta: 1
         }, header)
             .then((res) => {
-                console.log('deu certo', res)
+                alert('Loan successfully completed!')
+                navigation.navigate('Home')
             })
             .catch((erro) => {
                 console.log('deu bem errado', erro)

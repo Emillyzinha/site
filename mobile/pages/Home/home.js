@@ -33,6 +33,10 @@ function Home({ navigation }) {
         if (dados != undefined) {
             token = JSON.parse(dados)
         }
+        else {
+            navigation.navigate('Login')
+            alert('Please log into the app!')
+        }
         let tokenAccess = token.access
         const testeToken = {
             headers: {
@@ -96,6 +100,13 @@ function Home({ navigation }) {
                                     console.log('deu ruim cartao', err);
                                     console.log(header)
                                 })
+                            axios.get('http://127.0.0.1:8000/bank/movimentacao/', testeToken)
+                            .then((res) => {
+                                console.log('movimentacao', res);
+                            })
+                            .catch((err) => {
+                                console.log('movimentacao', err);
+                            })
                         }
                         ).catch((erro) => {
                             console.log('entrou4');

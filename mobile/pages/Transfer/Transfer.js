@@ -70,6 +70,7 @@ function Transfer({route}) {
             })
     }, [])
 
+    
     const verification = () => {
         if (name == '' || SSN == '') {
             alert('Fill the fields')
@@ -91,10 +92,7 @@ function Transfer({route}) {
             })
             .catch((err) => {
                 alert(err.data)
-            })
-            // enviar as informações do nome, valor e destinatario para o back end
-            // no back substituir a foreign key da conta
-            // no back fazer o cálculo e tirar de uma conta e adc em outra  
+            }) 
         }
     }
 
@@ -106,7 +104,7 @@ function Transfer({route}) {
                     <View style={styleTransfer.space} />
                     <FieldWithTitle onChange={(e) => setName(e.target.value)}>Full name</FieldWithTitle>
                     <FieldWithTitle onChange={(e) => setSSN(e.target.value)}>SSN</FieldWithTitle>
-                    <Text style={styleTransfer.title}>Information about the recipient</Text>
+                    <Text style={styleTransfer.h3}>Information about the recipient</Text>
                     <View style={styleTransfer.spaceButton}>
                         <ButtonArrow onPress={() => setSecurity(true)} />
                     </View>
@@ -126,7 +124,7 @@ function Transfer({route}) {
                         <CampoInput onChange={((e) => setPasswordUser(e))} />
 
                         <View style={styleTransfer.placeButton}>
-                            <ButtonArrow onPress={() => transaction()} />
+                            <ButtonArrow onPress={() => verification()} />
                         </View>
 
                     </View>

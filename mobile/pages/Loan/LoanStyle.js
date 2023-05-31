@@ -35,7 +35,7 @@ const styleLoan = StyleSheet.create({
         color: '#EDAA25',
     },
     image: {
-        width: '36%',
+        width: '30%',
         height: '100%',
     },
     placeButton: {

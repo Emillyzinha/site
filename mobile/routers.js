@@ -16,6 +16,7 @@ import Card from "./pages/Card/Card";
 import Address from "./pages/Address/address.js";
 import Value from "./components/Value/Value";
 import Transfer from "./pages/Transfer/Transfer";
+import Extract from "./pages/Extract/Extract";
 
 const Pilha = createStackNavigator()
 
@@ -24,18 +25,23 @@ function Routers() {
         <NavigationContainer>
             <Pilha.Navigator>
                 <Pilha.Screen
+                    name='Extract'
+                    component={Extract}
+                    options={{ headerShown: false }}
+                />
+                <Pilha.Screen
                     name='Home'
                     component={Home}
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen
-                    name='Login'
-                    component={Login}
+                    name='Transfer'
+                    component={Transfer}
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen
-                    name='Transfer'
-                    component={Transfer}
+                    name='Login'
+                    component={Login}
                     options={{ headerShown: false }}
                 />
                 <Pilha.Screen
