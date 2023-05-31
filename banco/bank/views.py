@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import AccessToken
 from django.http import HttpResponse
 from django.core import serializers
+from django.db.models import Q
 
 def dados_usuario(request):
     token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[1]
@@ -120,10 +121,13 @@ class EmprestimoCRUD(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         id_cliente = dados_usuario(request)
+        cliente = Cliente.objects.get(id=id_cliente)
         conta = Conta.objects.get(fk_cliente_id=id_cliente)
         valor_emprestimo = decimal.Decimal(request.data['valor'])
         conta.saldo += valor_emprestimo
         conta.save() 
+        Movimentacao.objects.create(transacao='Emprestimo', valor=valor_emprestimo, nomeCompleto=cliente.nomeCompleto, fk_conta=conta)
+
         return super().create(request, *args, **kwargs)
 
 class TransferenciaCRUD(viewsets.ModelViewSet):
@@ -171,11 +175,9 @@ class MovimentacaoCRUD(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         id_cliente = dados_usuario(request)
         conta = Conta.objects.get(fk_cliente=id_cliente)
+        cliente = Cliente.objects.get(id=id_cliente)
         id_conta = conta.id
-        transferencia = Transferencia.objects.filter(fk_conta=id_conta)
-        movimentacao_transferencia = Movimentacao.objects.filter(fk_conta=id_conta)
-        print('aqui', movimentacao_transferencia)
+        nome_cliente = cliente.nomeCompleto
+        movimentacao_transferencia = Movimentacao.objects.filter(Q(fk_conta=id_conta) | Q(nomeCompleto=nome_cliente))
         json_movimentacao = serializers.serialize("json", movimentacao_transferencia.all(), fields = ["transacao", "valor", "nomeCompleto", "data", "fk_conta"])
         return HttpResponse(json_movimentacao)
-        # return movimentacao_transferencia
-        # return super().list(request, *args, **kwargs)
