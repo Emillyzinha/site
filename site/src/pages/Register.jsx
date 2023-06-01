@@ -72,7 +72,7 @@ function Register() {
         <div className="h-full bg-temaCinza">
             <Nav />
             <div className="flex flex-col w-full justify-center items-center">
-                <div className="w-2/4 h-[70rem] bg-[#FFF] flex justify-center flex-col items-center mt-32">
+                <div className="h-[70rem] bg-none flex justify-center flex-col items-center w-11/12 xl:w-2/4 xl:bg-[#FFF] mt-32">
                     <h1 className="text-6xl font-bold text-center p-10">Register</h1>
                     <div className="flex flex-col w-full items-center">
                         <TextField type={"text"} children={"Full name"} onChange={(e) => setName(e.target.value)} />
@@ -84,7 +84,7 @@ function Register() {
                         <TextField children={"Password"} onChange={(e) => setPassword(e.target.value)} />
                         <TextField type={"password"} children={"Confirm Password"} onChange={(e) => setConfirmPassowrd(e.target.value)} />
                     </div>
-                    <Botao width={'w-1/5'} height={'h-16'} onClick={cadastrar}>
+                    <Botao width={'w-1/3'} height={'h-16'} onClick={cadastrar}>
                         Register
                     </Botao>
                 </div>

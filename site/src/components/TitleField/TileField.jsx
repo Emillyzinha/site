@@ -10,12 +10,11 @@ const TitleField = ({ situacao, value, title, type, children, onChange }) => {
             setColor('bg-[#ffffff')
         }
     })
-
-    console.log('color', color)
+    
     return (
 
         <div className="m-10">
-            <h3 className="text-5xl text-tema mb-4">{title}</h3>
+            <h3 className="text-4xl text-tema mb-4 xl:text-5xl">{title}</h3>
             <input readOnly={situacao} value={value} type={type} placeholder={children} onChange={onChange} className={`${color} outline-none w-full h-24 p-5 shadow-lg drop-shadow-md text-4xl rounded-lg`} />
         </div>
     );

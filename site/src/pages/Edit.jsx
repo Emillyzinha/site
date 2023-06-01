@@ -46,7 +46,6 @@ function Edit() {
                 setPhone(res.data.numero_telefone)
                 setEmail(res.data.email)
                 setIdCliente(res.data.id)
-                console.log('oir3', idCliente)
 
             })
             .catch((erro) => {
@@ -59,11 +58,11 @@ function Edit() {
                                     Authorization: `JWT ${tokenAccess}`
                                 },
                             }
-                            
+
                             setHeader(testeToken)
-                            
+
                             axios.get('http://127.0.0.1:8000/auth/users/me/',
-                            testeToken).then((res) => {
+                                testeToken).then((res) => {
                                     console.log('HERE', res)
                                     setName(res.data.nomeCompleto)
                                     setNickname(res.data.username)
@@ -98,14 +97,6 @@ function Edit() {
         }
     }
 
-    // const changeColor = () => {
-    //     if (readonly == true) {
-    //         setCor('bg-[#e7e7e7')
-    //     } else {
-    //         setCor('bg-[#ffffff')
-    //     }
-    // }
-
     const logica = () => {
         if (textInput == 'Save') {
             editClient()
@@ -114,20 +105,23 @@ function Edit() {
         }
     }
 
+const data = () => [
+    {
+        username: nickname,
+        nomeCompleto: name,
+        numero_telefone: phone,
+        email: email,
+        password: password,
+    }
+]
+
     const editClient = () => {
         axios.patch(`http://127.0.0.1:8000/auth/users/${idCliente}/`,
-            {
-                username: nickname,
-                nomeCompleto: name,
-                numero_telefone: phone,
-                email: email,
-                password: password,
-            }, headerCustom
+            data, headerCustom
         ).then((res) => {
             alert('Fields changed successfully!')
             setreadonly(true)
             setTextInput('Change')
-            console.log('deu certo', res)
         }).catch((error) => {
             if (password == '') {
                 alert('Set a password')
@@ -142,8 +136,8 @@ function Edit() {
         <div className="h-screen w-full" onSubmit={handleSubmit}>
             <Nav />
             <div className="flex flex-col w-full items-center p-10">
-                <div className="w-9/12 flex flex-col ">
-                    <p className="text-8xl text-tema text-center">ACCOUNT</p>
+                <div className="text-6xl flex flex-col sm:w-9/12">
+                    <p className=" text-tema text-center xl:text-8xl">ACCOUNT</p>
                     <TitleField situacao={readonly} title={'Full name'} type={"text"} value={name} onChange={(event) => setName(event.target.value)} />
                     <TitleField situacao={readonly} title={'Nickname'} type={"text"} value={nickname} onChange={(event) => setNickname(event.target.value)} />
                     <TitleField situacao={true} title={'Date of birth'} type={"text"} value={date} />
