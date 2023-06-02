@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react"
-import Botao from "../components/Botao/botao"
 import Nav from "../components/Nav/nav"
-import TextField from "../components/TextField/TextField"
 import TitleField from "../components/TitleField/TileField"
 import Footer from "../components/footer/footer"
 import axios from "axios";
@@ -16,7 +14,6 @@ function Edit() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [textInput, setTextInput] = useState('Change')
-    const [idCliente, setIdCliente] = useState('')
     const [headerCustom, setHeader] = useState({})
 
 
@@ -45,7 +42,6 @@ function Edit() {
                 setSSN(res.data.cpf)
                 setPhone(res.data.numero_telefone)
                 setEmail(res.data.email)
-                setIdCliente(res.data.id)
 
             })
             .catch((erro) => {
@@ -70,14 +66,21 @@ function Edit() {
                                     setSSN(res.data.cpf)
                                     setPhone(res.data.numero_telefone)
                                     setEmail(res.data.email)
-                                    setIdCliente(res.data.id)
                                 })
                         }
                         ).catch((erro) => {
-                            console.log('errooioioioio', erro)
+                            if (erro?.response?.data?.message) {
+                                alert(erro.response.data.message)
+                            } else {
+                                alert('An unexpected error occurred! Please contact support!')
+                            }
                         })
                 } else {
-                    console, log('oi', erro)
+                    if (erro?.response?.data?.message) {
+                        alert(erro.response.data.message)
+                    } else {
+                        alert('An unexpected error occurred! Please contact support!')
+                    }
                 }
             })
     }, [])
@@ -105,19 +108,16 @@ function Edit() {
         }
     }
 
-const data = () => [
-    {
-        username: nickname,
-        nomeCompleto: name,
-        numero_telefone: phone,
-        email: email,
-        password: password,
-    }
-]
-
     const editClient = () => {
-        axios.patch(`http://127.0.0.1:8000/auth/users/${idCliente}/`,
-            data, headerCustom
+        teste(name, )
+        axios.patch(`http://127.0.0.1:8000/auth/users/me/`,
+            {
+                username: nickname,
+                nomeCompleto: name,
+                numero_telefone: phone,
+                email: email,
+                password: password,
+            }, headerCustom
         ).then((res) => {
             alert('Fields changed successfully!')
             setreadonly(true)
@@ -129,8 +129,6 @@ const data = () => [
             console.log('deu errado', error)
         })
     }
-
-    console.log('aqui', name)
 
     return (
         <div className="h-screen w-full" onSubmit={handleSubmit}>

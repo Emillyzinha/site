@@ -49,7 +49,7 @@ function Register() {
                             alert(erro.response.data.message)
                             console.log('console', erro.response.data.message)
                         } else {
-                            alert('Aconteceu um erro inesperado ao afetuar o seu login! Entre em contato com o suporte!')
+                            alert('An unexpected error occurred while logging in! Please contact support!')
                         }
                     })
             })
@@ -64,7 +64,7 @@ function Register() {
                     alert('Fill in all fields')
                 }
                 else {
-                    alert('Aconteceu um erro inesperado ao afetuar o seu login! Entre em contato com o suporte!')
+                    alert('An unexpected error occurred while logging in! Please contact support!')
                 }
             })
     }

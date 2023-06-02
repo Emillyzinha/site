@@ -24,7 +24,7 @@ function Main() {
                 <WeAre ml={'ml-[53%]'} mt={'mt-[8.6rem]'} />
 
                 <div className='flex justify-between items-center mt-16 flex-col xl:flex-row xl:justify-around'>
-                    <h1 className='text-5xl text-center flex items-center xl:text-8xl w-2/5'>Ask for your card without annuity</h1>
+                    <h1 className='text-5xl w-full text-center flex items-center xl:text-8xl xl:w-2/5'>Ask for your card without annuity</h1>
                     <img className='w-48 mt-8 xl:w-1/4' src={cartao} />
                 </div>
 
@@ -48,7 +48,7 @@ function Main() {
                 <div className="w-full flex flex-col justify-center xl:hidden">
                     <h1 className='text-4xl flex items-center text-center mt-10 p-1'>To know more contact us</h1>
                     <div className="w-full flex mt-3 justify-center items-center">
-                        <input type='text' value='Your email' className='outline-none bg-temaCinza border-[#000] border-[3px] h-16 w-4/6 text-[22px] p-5' />
+                        <input type='text' value='Your email' className='outline-none border-[#000] border-[3px] h-16 w-4/6 text-[22px] p-5 xl:bg-temaCinza' />
                         <button className='w-1/4 h-16 bg-[#000] text-[#fff] text-[22px]'>Send</button>
                     </div>
                 </div>

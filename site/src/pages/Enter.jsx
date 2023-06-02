@@ -30,7 +30,7 @@ function Enter() {
                         alert(erro.response.data.message)
                         console.log('console', erro.response.data.message)
                     } else if(erro.response.data.detail == 'No active account found with the given credentials') {
-                        alert('As per your information!')
+                        alert('Confirm your information!')
                     }
                 })
         }catch{
