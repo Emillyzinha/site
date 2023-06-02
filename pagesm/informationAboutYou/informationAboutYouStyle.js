@@ -7,6 +7,7 @@ const styleInformationAboutYou = StyleSheet.create({
         alignItems: "center",
         paddingTop: 50,
         padding: 20,
+        backgroundColor: '#FFFFFFF',
     },
     top: {
         display: "flex",
@@ -88,6 +89,14 @@ const styleInformationAboutYou = StyleSheet.create({
         color: '#8B8B8B',
         textAlign: "center",
         fontWeight: 600,
+    },
+    return: {
+        width: 20,
+        height: 20,
+    },
+    seta:{
+        width: 20,
+        height: 20,
     },
 })
 

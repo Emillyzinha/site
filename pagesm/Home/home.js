@@ -1,7 +1,8 @@
 import { Text, View } from "react-native"
 import { Image } from "react-native"
+import { useEffect, useState } from "react"
 
-import estilosHome from "./homeStyle"
+import stylesHome from "./homeStyle"
 
 import TopImages from '../../components/TopImages/TopImages'
 import OptionsTransactions from '../../components/OptionsTransactions/OptionsTransactions'
@@ -10,6 +11,7 @@ import Board from '../../components/Board/Board'
 
 import fotoUser from '../../assets/fotoUser.png'
 import olhoAberto from '../../assets/olhoAberto.png'
+import olhoFechado from '../../assets/olhoFechado.png'
 import configuracao from '../../assets/configuracao.png'
 import imagePix from '../../assets/imgPix.png'
 import imageTransfer from '../../assets/imgTransfer.png'
@@ -17,7 +19,7 @@ import imageBarras from '../../assets/codigoBarras.png'
 import imageRecharge from '../../assets/imgRecharge.png'
 import grafico from '../../assets/grafico.png'
 import imageLoan from '../../assets/loan.png'
-import { useEffect, useState } from "react"
+
 import axios from "axios"
 
 function Home({ navigation }) {
@@ -25,8 +27,19 @@ function Home({ navigation }) {
     const [name, setName] = useState('')
     const [balance, setBalance] = useState('')
     const [haveCard, sethaveCard] = useState(false)
+    const [visibility, setVisibility] = useState(false)
+    const [image, setImage] = useState(olhoFechado)
+    const [showBalance, setShowBalance] = useState('---')
 
     let dados = localStorage.getItem('token')
+
+    const error = (erro) => {
+        if (erro?.response?.data?.message) {
+            alert(erro.response.data.message)
+        } else {
+            alert('An unexpected error occurred! Please contact support!')
+        }
+    }
 
     useEffect(() => {
         let token = ''
@@ -51,9 +64,8 @@ function Home({ navigation }) {
                 console.log('conta', res.data[0].fields.saldo)
                 setBalance(res.data[0].fields.saldo)
             })
-            .catch((err) => {
-                console.log('deu ruim2', err);
-                console.log(header)
+            .catch((erro) => {
+                
             })
 
         axios.get('http://127.0.0.1:8000/auth/users/me/', // DESCOBRIR QUEM TA LOGADO
@@ -79,76 +91,71 @@ function Home({ navigation }) {
                                     console.log(res.data)
                                     setName(res.data.username)
                                 })
-                                .catch((err) => {
-                                    console.log('deu ruim2', err);
-                                    console.log(header)
+                                .catch((erro) => {
+                                    error(erro)
                                 })
                             axios.get('http://127.0.0.1:8000/bank/conta/', testeToken)
                                 .then((res) => {
                                     console.log('conta', res.data[0].fields.saldo)
                                     setBalance(res.data[0].fields.saldo)
                                 })
-                                .catch((err) => {
-                                    console.log('deu ruim2', err);
-                                    console.log(header)
+                                .catch((erro) => {
+                                    error(erro)
                                 })
                             axios.get('http://127.0.0.1:8000/bank/cartao/', testeToken)
                                 .then((res) => {
                                     res.data.length == 0 ? sethaveCard(false) : sethaveCard(true)
                                 })
                                 .catch((err) => {
-                                    console.log('deu ruim cartao', err);
-                                    console.log(header)
+                                    error(erro)
                                 })
                             axios.get('http://127.0.0.1:8000/bank/movimentacao/', testeToken)
                             .then((res) => {
-                                console.log('movimentacao', res);
+                                
                             })
-                            .catch((err) => {
-                                console.log('movimentacao', err);
+                            .catch((erro) => {
+                                error(erro)
                             })
                         }
                         ).catch((erro) => {
-                            console.log('entrou4');
-                            console.log('errooioioioio', erro)
+                            error(erro)
                         })
                 } else {
-                    console, log('oi', erro)
+                    error(erro)
                 }
             })
 
     }, [])
 
-    console.log('teste', haveCard)
 
     return (
-        <View style={estilosHome.pagina}>
+        <View style={stylesHome.pagina}>
 
-            <View style={estilosHome.topo}>
-                <View style={estilosHome.conteudoTopo}>
-                    <Image source={fotoUser} style={estilosHome.user} />
-                    <Text style={estilosHome.hello}>Hello, {name}</Text>
+            <View style={stylesHome.topo}>
+                <View style={stylesHome.conteudoTopo}>
+                    <Image source={fotoUser} style={stylesHome.user} />
+                    <Text style={stylesHome.hello}>Hello, {name}</Text>
                 </View>
-                <View style={estilosHome.imagensTopo}>
-                    <TopImages img={olhoAberto} width={40} heigth={26} />
-                    <TopImages img={configuracao} width={40} heigth={40} />
+                <View style={stylesHome.imagensTopo}>
+                    <TopImages onPress={() => visibility == false ?  setImage(olhoFechado, setVisibility(true), setShowBalance('---')) : setImage(olhoAberto, setVisibility(false), setShowBalance(balance))} img={image} width={37} heigth={30} />
+                    <TopImages onPress={() => navigation.navigate('Information')}img={configuracao} width={40} heigth={40} />
                 </View>
             </View>
 
-            <View style={estilosHome.balance}>
-                <Text style={estilosHome.textBalance}>Balance</Text>
-                <Text style={estilosHome.valeuBalance}>$ {balance}</Text>
+            <View style={stylesHome.balance}>
+                <Text style={stylesHome.textBalance}>Balance</Text>
+                <Text style={stylesHome.valeuBalance}>$ {showBalance}</Text>
             </View>
 
-            <View style={estilosHome.OptionsTransactions}>
-                <OptionsTransactions img={imagePix} fontSize={25} width={55} height={55}>Pix</OptionsTransactions>
+            <View style={stylesHome.OptionsTransactions}>
+                <OptionsTransactions img={imagePix} fontSize={25} width={55} height={55} onClick={() => navigation.navigate('Value', { img: imageTransfer, title: 'Value', textImage: 'Transfer ', navigateTo: 'Transfer' })}>Pix</OptionsTransactions>
                 <OptionsTransactions img={imageBarras} fontSize={25} width={60} height={60}>Ticket</OptionsTransactions>
                 <OptionsTransactions img={imageRecharge} fontSize={20} width={60} height={60}>Recharge</OptionsTransactions>
                 <OptionsTransactions img={imageTransfer} fontSize={20} width={60} height={60} onClick={() => navigation.navigate('Value', { img: imageTransfer, title: 'Value', textImage: 'Transfer ', navigateTo: 'Transfer' })}>Transfer</OptionsTransactions>
             </View>
 
-            <View style={estilosHome.movement}>
-                <Text style={estilosHome.textMovement}>Account movement</Text>
+            <View style={stylesHome.movement}>
+                <Text style={stylesHome.textMovement}>Account movement</Text>
                 {haveCard ?
                     <ButtonMovement onPress={() => { navigation.navigate('Card') }}>Your Cards</ButtonMovement>
                     :
@@ -158,8 +165,8 @@ function Home({ navigation }) {
                 <ButtonMovement onPress={() => navigation.navigate('Extract')}>Extract</ButtonMovement>
             </View>
 
-            <View style={estilosHome.movement}>
-                <Text style={estilosHome.textMovement}>Financial organization</Text>
+            <View style={stylesHome.movement}>
+                <Text style={stylesHome.textMovement}>Financial organization</Text>
                 <Board image={grafico} width={350} height={200} />
             </View>
         </View>

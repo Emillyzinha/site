@@ -1,5 +1,7 @@
 import { Image, Text, TouchableOpacity, View } from "react-native";
+
 import logo from "../../assets/logo-full.png"
+
 import stylesWelcome from "./WelcomeStyle";
 import Button from "../../components/Button/Button";
 

@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "react-native-web";
 import UnchangingField from "../../components/UnchangingField/UnchangingField.js";
+import ReturnPage from "../../components/ReturnPage/ReturnPage.js";
 
 function Card({ navigation }) {
     const [renderiza, setRenderiza] = useState(false)
@@ -108,8 +109,13 @@ function Card({ navigation }) {
 
     }, [])
 
+    const voltar = () =>{
+        navigation.navigate('Home')
+    }
+
     return (
         <View style={stylesCard.screen}>
+            <ReturnPage onPress={voltar}/>
             <TopPages image={cardTitle} text='Your cards' />
             <View style={stylesCard.fields}>
                 <UnchangingField title='Name' text={name} width={'100%'} sizeTitle={30} />

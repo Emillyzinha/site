@@ -7,6 +7,7 @@ const styleLogin = StyleSheet.create({
         paddingTop: 50,
         padding: 20,
         alignItems: "center",
+        backgroundColor:'#FFFFFF',
     },
     space: {
         marginBottom: 40,

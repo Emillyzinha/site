@@ -8,6 +8,7 @@ import axios from "axios"
 import InputField from "../../components/InputField/InputField"
 import ButtonArrow from "../../components/buttonArrow/ButtonArrow"
 import imagePadlock from '../../assets/padlock.png'
+import ReturnPage from "../../components/ReturnPage/ReturnPage"
 
 function Loan({ navigation, route }) {
     const { value } = route.params
@@ -135,6 +136,7 @@ function Loan({ navigation, route }) {
         <>
             {teste == false ?
                 <View style={styleLoan.screen}>
+                    <ReturnPage onPress={() => navigation.navigate('Home')} />
                     <TopPages image={imageLoan} text='Loan' />
                     <View style={styleLoan.boxAll}>
                         <Text style={styleLoan.textTitle}>Installments</Text>
@@ -148,6 +150,7 @@ function Loan({ navigation, route }) {
                 </View>
                 :
                 <View style={styleLoan.screen}>
+                    <ReturnPage onPress={() => setTeste(false)} />
                     <View>
                         <TopPages image={imageLoan} text='Loan' />
 

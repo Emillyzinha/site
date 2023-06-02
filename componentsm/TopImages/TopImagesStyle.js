@@ -19,10 +19,6 @@ const stylesTopImages  = StyleSheet.create({
         shadowRadius: 4.65,
         elevation: 7,
     },
-    imagem: {
-        width: 40,
-        height: 25,
-    },
 })
 
 export default stylesTopImages

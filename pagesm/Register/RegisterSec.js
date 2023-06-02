@@ -1,10 +1,13 @@
-import { View } from "react-native";
-import InputField from "../../components/InputField/InputField";
-import estilos from "./RegisterStyle";
-import TopStart from "../../components/TopStart/TopStart";
-import Button from "../../components/Button/Button";
-import { useState } from "react";
-import axios from "axios";
+import { View } from "react-native"
+import { useState } from "react"
+
+import estilos from "./RegisterStyle"
+
+import InputField from "../../components/InputField/InputField"
+import TopStart from "../../components/TopStart/TopStart"
+import Button from "../../components/Button/Button"
+
+import axios from "axios"
 
 function RegisterSec({ route, navigation }) {
     const { name, nickname, birth, ssn } = route.params
@@ -38,13 +41,12 @@ function RegisterSec({ route, navigation }) {
                         console.log(resposta)
                         setToken(resposta.data.access)
                         localStorage.setItem('token', JSON.stringify(resposta.data))
-                        navigation.navigate('Desbloquear')
+                        navigation.navigate('Home')
                     })
                     .catch((erro) => {
                         console.log('não criou token', erro)
                         if (erro?.response?.data?.message) {
                             alert(erro.response.data.message)
-                            console.log('console', erro.response.data.message)
                         } else {
                             alert('Aconteceu um erro inesperado ao afetuar o seu login! Entre em contato com o suporte!')
                         }
@@ -56,12 +58,10 @@ function RegisterSec({ route, navigation }) {
                 } if (erro.response.data.email == 'Enter a valid email address.') {
                     alert('Write the email correctly')
                 } else if (erro?.response?.data) {
-                    console.log('aqui', erro.response.data)
-                    console.log('erro aqui', erro)
                     alert('Fill in all fields')
                 }
                 else {
-                    alert('Aconteceu um erro inesperado ao afetuar o seu login! Entre em contato com o suporte!')
+                    alert('An unexpected error occurred while logging in! Please contact support!')
                 }
             })
     }
@@ -72,8 +72,6 @@ function RegisterSec({ route, navigation }) {
         }
         else {
             cadastrar()
-            // navigation.navigate('Desbloquear')
-
         }
     }
 
@@ -85,7 +83,6 @@ function RegisterSec({ route, navigation }) {
             <InputField onChange={(e) => setEmail(e.target.value)}>Email</InputField>
             <InputField onChange={(e) => setPassword(e.target.value)}>Password</InputField>
             <InputField onChange={(e) => setConfirmPassword(e.target.value)}>Confirm the password</InputField>
-            {/* {confirmPassword != password ? console.log()} */}
             <Button onPress={() => validacaoBotao()}> Register </Button>
         </View>
     )

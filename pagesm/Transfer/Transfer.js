@@ -8,8 +8,9 @@ import FieldWithTitle from "../../components/FieldWithTitle/FieldWithTitle"
 import { useEffect, useState } from "react"
 import imagePadlock from '../../assets/padlock.png'
 import axios from "axios"
+import ReturnPage from "../../components/ReturnPage/ReturnPage"
 
-function Transfer({route}) {
+function Transfer({navigation, route}) {
     const { value } = route.params
     const value_int = parseInt(value)
     const [name, setName] = useState('Ana Julia')
@@ -100,6 +101,7 @@ function Transfer({route}) {
         <>
             {!security ?
                 <View style={styleTransfer.screen}>
+                    <ReturnPage onPress={() =>  navigation.navigate('Value', { img: imageTransfer, title: 'Value', textImage: 'Transfer', navigateTo: 'Transfer' })} />
                     <TopPages image={imageTransfer} text='Transfer' />
                     <View style={styleTransfer.space} />
                     <FieldWithTitle onChange={(e) => setName(e.target.value)}>Full name</FieldWithTitle>

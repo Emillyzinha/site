@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-const estilosHome = StyleSheet.create({
+const stylesHome = StyleSheet.create({
     pagina: {
         flex: 1,
         display: 'flex',
@@ -76,4 +76,4 @@ const estilosHome = StyleSheet.create({
     
 })
 
-export default estilosHome
+export default stylesHome

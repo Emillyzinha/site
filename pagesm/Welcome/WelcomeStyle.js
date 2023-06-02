@@ -10,6 +10,7 @@ const stylesWelcome = StyleSheet.create({
         padding: 20,
         alignItems: "center",
         justifyContent: 'space-between',
+        backgroundColor: '#fff'
     },
     image: {
         width: 350,

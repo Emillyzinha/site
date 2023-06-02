@@ -6,6 +6,7 @@ import InputField from "../InputField/InputField"
 import ButtonArrow from "../buttonArrow/ButtonArrow"
 import { useEffect, useState } from "react"
 import axios from "axios"
+import ReturnPage from "../ReturnPage/ReturnPage"
 
 const Value = ({ navigation, route }) => {
     const [header, setHeader] = useState({})
@@ -82,6 +83,8 @@ const Value = ({ navigation, route }) => {
 
     return (
         <View style={styleValue.screen}>
+            <ReturnPage onPress={() => navigation.navigate('Home')} />
+
             <TopPages image={img} text={textImage} />
             <Text style={styleValue.title}>{title}</Text>
             <InputField onChange={(e) => setValue(e.target.value)} />

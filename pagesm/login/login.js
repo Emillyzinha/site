@@ -1,10 +1,13 @@
-import { Text, View } from "react-native";
-import TopStart from "../../components/TopStart/TopStart";
-import styleLogin from "./LoginStyle";
-import Button from "../../components/Button/Button";
-import axios from "axios";
+import { View } from "react-native";
 import { useState } from "react";
+
+import styleLogin from "./LoginStyle";
+
+import TopStart from "../../components/TopStart/TopStart";
+import Button from "../../components/Button/Button";
 import InputField from "../../components/InputField/InputField";
+
+import axios from "axios";
 
 function Login({ navigation }) {
     const [cpf, setCpf] = useState('')
@@ -20,22 +23,20 @@ function Login({ navigation }) {
             console.log(resposta)
             setToken(resposta.data.access)
             localStorage.setItem('token', JSON.stringify(resposta.data))
-            // navigate('/edit')
             navigation.navigate('Home')
 
         })
             .catch((erro) => {
-                if (erro?.response?.data?.message) {
+                if (cpf == '' || password == ''){
+                    alert('Fill the fields')
+                }
+                else if (erro?.response?.data?.message) {
                     alert(erro.response.data.message)
-                    console.log('console', erro.response.data.message)
                 } else {
-                    console.log(erro)
-                    alert('Aconteceu um erro inesperado ao afetuar o seu login! Entre em contato com o suporte!')
+                    alert('An unexpected error occurred while logging in! Please contact support!')
                 }
             })
     }
-
-    console.log('poioioi', cpf)
 
     return (
         <View style={styleLogin.screen}>
