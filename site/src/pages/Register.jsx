@@ -81,7 +81,7 @@ function Register() {
                         <TextField type={"text"} children={"Social security number (SSN)"} onChange={(e) => setSsn(e.target.value)} />
                         <TextField type={"text"} children={"Cell phone"} onChange={(e) => setNumberCell(e.target.value)} />
                         <TextField type={"text"} children={"E-mail"} onChange={(e) => setEmail(e.target.value)} />
-                        <TextField children={"Password"} onChange={(e) => setPassword(e.target.value)} />
+                        <TextField type={'password'} children={"Password"} onChange={(e) => setPassword(e.target.value)} />
                         <TextField type={"password"} children={"Confirm Password"} onChange={(e) => setConfirmPassowrd(e.target.value)} />
                     </div>
                     <Botao width={'w-1/3'} height={'h-16'} onClick={cadastrar}>

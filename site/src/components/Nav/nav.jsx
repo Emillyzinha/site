@@ -1,9 +1,10 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom";
 
 const Nav = () => {
     let dados = localStorage.getItem('token')
-    const navigate =  useNavigate()
+    const navigate = useNavigate()
 
     const goOut = () => {
         localStorage.removeItem('token')
@@ -28,7 +29,6 @@ const Nav = () => {
                             <Link to={'/aboutus'}> <li className="text-[16px] xl:text-4xl">ABOUT US</li> </Link>
                             <Link to={'/edit'}> <li className="text-[16px] xl:text-4xl">EDIT</li> </Link>
                             <button onClick={() => goOut()} className="text-[16px] xl:text-4xl">EXIT</button>
-                            <button onClick={() => goOut()} className="text-[16px] xl:text-4xl">DELETE</button>
                         </div>
                     </>
                 }
